@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kafka-exporter
+  name: kafka-exporter
+  namespace: monitoring
+spec:
+  ports:
+  - name: metrics
+    nodePort: 31532
+    port: 9308
+    targetPort: metrics
+  selector:
+    app: kafka-exporter
