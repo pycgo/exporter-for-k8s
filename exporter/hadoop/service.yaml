@@ -8,7 +8,6 @@ metadata:
 spec:
   ports:
   - name: metrics
-    nodePort: 30262
     port: 9123
   selector:
     app: hadoop-exporter
