@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hadoop-exporter
+  name: hadoop-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hadoop-exporter
+  template:
+    metadata:
+      labels:
+        app: hadoop-exporter
+    spec:
+      containers:
+      - image: vqcuong96/hadoop_exporter
+        imagePullPolicy: IfNotPresent
+        name: hadoop-exporter
+        ports:
+        - containerPort: 9123
+          name: metrics
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /exporter/config.yaml
+          name: hadoop-exporter-config
+          subPath: config.yaml
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: hadoop-exporter-config
+        name: hadoop-exporter-config
