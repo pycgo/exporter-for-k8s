@@ -1,0 +1,14 @@
+napiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hadoop-exporter
+  name: hadoop-exporter
+  namespace: monitoring
+spec:
+  ports:
+  - name: metrics
+    nodePort: 30262
+    port: 9123
+  selector:
+    app: hadoop-exporter
