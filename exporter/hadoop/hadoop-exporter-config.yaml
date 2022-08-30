@@ -1,0 +1,31 @@
+apiVersion: v1
+data:
+  config.yaml: |
+    # exporter server config
+    server:
+      address: 0.0.0.0 # address to run exporter
+      port: 9123 # port to listen
+
+    # list of jmx service to scape metrics
+    jmx:
+      - cluster: hadoop
+        services:
+          namenode:
+            - http://hadoop-hdfs-namenode:9870/jmx
+          datanode:
+          # dfs.datanode.http.address port
+            - http://hadoop-hdfs-datanode-0.hadoop-hdfs-datanode:51000/jmx
+            - http://hadoop-hdfs-datanode-1.hadoop-hdfs-datanode:51000/jmx
+            - http://hadoop-hdfs-datanode-2.hadoop-hdfs-datanode:51000/jmx
+          resourcemanager:
+            - http://hadoop-yarn-resourcemanager:8088/jmx
+          nodemanager:
+            - http://hadoop-yarn-nodemanager-0.hadoop-yarn-nodemanager:8042/jmx
+            - http://hadoop-yarn-nodemanager-1.hadoop-yarn-nodemanager:8042/jmx
+            - http://hadoop-yarn-nodemanager-2.hadoop-yarn-nodemanager:8042/jmx
+          hiveserver2:
+            - http://hive:10002/jmx
+kind: ConfigMap
+metadata:
+  name: hadoop-exporter-config
+  namespace: monitoring
