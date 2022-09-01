@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mysql-rule
+  labels:
+    app: mysql-rule
+spec:
+  groups:
+    - name: mysql-rule
+      rules:
+        - alert: MysqlDown
+          annotations:
+            description: 'mysql down.'
+            summary: mysql down.
+          expr: |
+            mysql_up == 0
+          for: 5s
+          labels:
+            linkflowAlert: warning
+            severity: warning
+            namespace: linkflow
